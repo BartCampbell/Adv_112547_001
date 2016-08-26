@@ -45,15 +45,15 @@ BEGIN
 			BEGIN TRANSACTION
 			BEGIN TRY
 				
-				IF (@User IN (0)) --Provider Portal
+				IF (@User IN (164,165)) --Provider Portal
 				BEGIN
 					SET @ExtractionQueueSource_PK = 3
 					SET @OfficeFaxOrID = 0
 					SET @Records = 25
 				END
-				ELSE IF (@User IN (163,167,166,164,165)) --Mail-In
+				ELSE IF (@User IN (163,167,166)) --Mail-In
 				BEGIN
-					SET @ExtractionQueueSource_PK = 0
+					SET @ExtractionQueueSource_PK = 5
 					SET @OfficeFaxOrID = 0
 					SET @Records = 25
 				END
