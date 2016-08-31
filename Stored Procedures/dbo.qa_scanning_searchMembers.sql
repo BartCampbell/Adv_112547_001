@@ -8,9 +8,8 @@ GO
 -- Create date: Mar-12-2014
 -- Description:	RA Coder will use this sp to pull list of members in a project
 -- =============================================
---	qa_getMembers 0,0,100,1,'','','0,1,7,10','6',''
---	qa_searchMembers 0,'45719444','','1,2,3,4,5,6,7,8,9,10'
-Create PROCEDURE [dbo].[qa_scanning_searchMembers] 
+--	qa_scanning_searchMembers '0','0','12714034','',1
+CREATE PROCEDURE [dbo].[qa_scanning_searchMembers] 
 	@Projects varchar(100),
 	@ProjectGroup varchar(10),
 	@member varchar(200), 
@@ -50,7 +49,7 @@ BEGIN
 			INNER JOIN tblProject P WITH (NOLOCK) ON S.Project_PK = P.Project_PK
 			INNER JOIN tblProvider PP WITH (NOLOCK) ON PP.Provider_PK = S.Provider_PK
 			INNER JOIN tblProviderMaster PM WITH (NOLOCK) ON PP.ProviderMaster_PK = PM.ProviderMaster_PK
-			LEFT JOIN tblUser U WITH (NOLOCK) ON U.User_PK = S.Coded_User_PK
+			LEFT JOIN tblUser U WITH (NOLOCK) ON U.User_PK = S.Scanned_User_PK
 			LEFT JOIN tblScanningQANote_Suspect SN WITH (NOLOCK) ON SN.Suspect_PK = S.Suspect_PK
 			LEFT JOIN tblUser QA WITH (NOLOCK) ON QA.User_PK = SN.QA_User_PK
 		WHERE S.IsScanned=1'
