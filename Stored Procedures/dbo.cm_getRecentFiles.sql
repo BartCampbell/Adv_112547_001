@@ -44,14 +44,14 @@ BEGIN
 			RETRY_NextAssign: -- Transaction RETRY
 			BEGIN TRANSACTION
 			BEGIN TRY
-				
-				IF (@User IN (164,165,163,167,166)) --Provider Portal
+			/*
+				IF (@User IN (0)) --Provider Portal
 				BEGIN
-					SET @ExtractionQueueSource_PK = 0 --3
+					SET @ExtractionQueueSource_PK = 3
 					SET @OfficeFaxOrID = 0
 					SET @Records = 25
 				END
-				ELSE IF (@User IN (163,167,166)) --Mail-In
+				ELSE IF (@User IN (164,163,167,166,165)) --Mail-In
 				BEGIN
 					SET @ExtractionQueueSource_PK = 5
 					SET @OfficeFaxOrID = 0
@@ -59,15 +59,14 @@ BEGIN
 				END
 				ELSE
 				BEGIN
-				/**/
-					SELECT TOP 1 @ExtractionQueueSource_PK=ExtractionQueueSource_PK, @OfficeFaxOrID=OfficeFaxOrID FROM tblExtractionQueue WHERE AssignedUser_PK IS NULL ORDER BY UploadDate ASC -- AND ExtractionQueueSource_PK NOT IN (5) 
+				*/
+					SELECT TOP 1 @ExtractionQueueSource_PK=ExtractionQueueSource_PK, @OfficeFaxOrID=OfficeFaxOrID FROM tblExtractionQueue WHERE AssignedUser_PK IS NULL ORDER BY UploadDate ASC
 					IF (@OfficeFaxOrID IS NULL)
 					BEGIN
 						SET @Records = 25
 						SET @OfficeFaxOrID = '0'
 					END
-					
-				END
+				--END
 				
 				;
 				with tbl as (

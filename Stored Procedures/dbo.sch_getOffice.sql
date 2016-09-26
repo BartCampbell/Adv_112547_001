@@ -7,7 +7,7 @@ GO
 -- Create date: Mar-12-2014
 -- Description:	RA Coder will use this sp to pull list of providers in a project
 -- =============================================
---	sch_getOffice @Projects='0', @ProjectGroup='0', @Page=1, @PageSize=100, @Alpha='', @Sort='', @Order='', @Provider=9, @bucket=0, @followup_bucket=0, @user=1, @scheduler=0, @PoolPK=0, @ZonePK=0, @OFFICE=0
+--	sch_getOffice @Projects='0', @ProjectGroup='0', @Page=1, @PageSize=100, @Alpha='', @Sort='', @Order='', @Provider=9, @bucket=0, @followup_bucket=0, @user=60, @scheduler=60, @PoolPK=0, @ZonePK=0, @OFFICE=0
 CREATE PROCEDURE [dbo].[sch_getOffice] 
 	@Projects varchar(100),
 	@ProjectGroup varchar(10),
@@ -17,7 +17,7 @@ CREATE PROCEDURE [dbo].[sch_getOffice]
 	@Sort Varchar(150),
 	@Order Varchar(4),
 	@Provider BigInt,
-	@bucket tinyint,
+	@bucket int,
 	@followup_bucket tinyint,
 	@user int,
 	@scheduler int,
@@ -50,12 +50,13 @@ BEGIN
 	DECLARE @IsScheduler AS BIT = 0
 	DECLARE @IsSupervisor AS BIT = 0
 	DECLARE @IsManager AS BIT = 0
+
 	If (@Provider<>0) 
 	BEGIN
 		SET @scheduler = 0
 		SET @PoolPK = 0;
 		SET @ZonePK = 0;
-		SET @bucket = 0;
+		SET @bucket = -1;
 		SET @followup_bucket=0;
 		SET @Projects = '0'
 		SET @ProjectGroup = '0'
@@ -84,7 +85,6 @@ BEGIN
 		END
 	END
 
-
 	CREATE TABLE #tmpOffices (ProviderOffice_PK BIGINT,Providers INT, Charts Int, LastContact SmallDateTime, FollowUpDate SmallDateTime,Offices smallint)
 	CREATE INDEX idxProviderOffice_PK ON #tmpOffices (ProviderOffice_PK)
 
@@ -94,7 +94,7 @@ BEGIN
 		INNER JOIN cacheProviderOffice cPO WITH (NOLOCK) ON cPO.ProviderOffice_PK = PO.ProviderOffice_PK
 		INNER JOIN #tmpProject P ON P.Project_PK = cPO.Project_PK 
 		LEFT JOIN tblZoneZipcode ZZC WITH (NOLOCK) ON ZZC.ZipCode_PK = PO.ZipCode_PK
-		WHERE (@bucket=0 OR PO.ProviderOfficeBucket_PK=@bucket)
+		WHERE (@bucket=-1 OR PO.ProviderOfficeBucket_PK=@bucket)
 			AND (@PoolPK=0 OR PO.Pool_PK=@PoolPK)
 			AND (@ZonePK=0 OR ZZC.Zone_PK=@ZonePK)
 			AND (@scheduler=0 OR PO.AssignedUser_PK=@scheduler)
