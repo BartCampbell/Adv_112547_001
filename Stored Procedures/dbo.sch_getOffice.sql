@@ -7,7 +7,7 @@ GO
 -- Create date: Mar-12-2014
 -- Description:	RA Coder will use this sp to pull list of providers in a project
 -- =============================================
---	sch_getOffice @Projects='0', @ProjectGroup='0', @Page=1, @PageSize=100, @Alpha='', @Sort='', @Order='', @Provider=9, @bucket=0, @followup_bucket=0, @user=60, @scheduler=60, @PoolPK=0, @ZonePK=0, @OFFICE=0
+--	sch_getOffice @Projects='0', @ProjectGroup='0', @Page=1, @PageSize=100, @Alpha='', @Sort='', @Order='', @Provider=9, @bucket=0, @followup_bucket=0, @user=1, @scheduler=0, @PoolPK=0, @ZonePK=0, @OFFICE=0
 CREATE PROCEDURE [dbo].[sch_getOffice] 
 	@Projects varchar(100),
 	@ProjectGroup varchar(10),
@@ -23,7 +23,8 @@ CREATE PROCEDURE [dbo].[sch_getOffice]
 	@scheduler int,
 	@PoolPK int,
 	@ZonePK int,
-	@OFFICE bigint
+	@OFFICE bigint,
+	@address varchar(100)
 AS
 BEGIN
 	-- PROJECT SELECTION
@@ -50,8 +51,7 @@ BEGIN
 	DECLARE @IsScheduler AS BIT = 0
 	DECLARE @IsSupervisor AS BIT = 0
 	DECLARE @IsManager AS BIT = 0
-
-	If (@Provider<>0) 
+	If (@Provider<>0 OR @address<>'' ) 
 	BEGIN
 		SET @scheduler = 0
 		SET @PoolPK = 0;
@@ -61,7 +61,8 @@ BEGIN
 		SET @Projects = '0'
 		SET @ProjectGroup = '0'
 		SET @IsManager=1
-		SELECT TOP 1 @OFFICE = ProviderOffice_PK FROM tblProvider WITH (NOLOCK) WHERE Provider_PK=@Provider;
+		if (@Provider<>0)
+			SELECT TOP 1 @OFFICE = ProviderOffice_PK FROM tblProvider WITH (NOLOCK) WHERE Provider_PK=@Provider;
 	END
 	ELSE 
 	BEGIN 
@@ -85,6 +86,7 @@ BEGIN
 		END
 	END
 
+
 	CREATE TABLE #tmpOffices (ProviderOffice_PK BIGINT,Providers INT, Charts Int, LastContact SmallDateTime, FollowUpDate SmallDateTime,Offices smallint)
 	CREATE INDEX idxProviderOffice_PK ON #tmpOffices (ProviderOffice_PK)
 
@@ -100,6 +102,7 @@ BEGIN
 			AND (@scheduler=0 OR PO.AssignedUser_PK=@scheduler)
 			AND (@followup_bucket=0 OR follow_up<=GetDate())
 			AND (@OFFICE=0 OR PO.ProviderOffice_PK=@OFFICE)
+			AND (@address='' OR PO.Address LIKE '%'+@address+'%')
 		GROUP BY PO.ProviderOffice_PK
 
 	IF @Page>0 AND @PageSize>0

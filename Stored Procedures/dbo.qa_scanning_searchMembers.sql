@@ -8,8 +8,9 @@ GO
 -- Create date: Mar-12-2014
 -- Description:	RA Coder will use this sp to pull list of members in a project
 -- =============================================
---	qa_scanning_searchMembers '0','0','12714034','',1
-CREATE PROCEDURE [dbo].[qa_scanning_searchMembers] 
+--	qa_getMembers 0,0,100,1,'','','0,1,7,10','6',''
+--	qa_searchMembers 0,'45719444','','1,2,3,4,5,6,7,8,9,10'
+Create PROCEDURE [dbo].[qa_scanning_searchMembers] 
 	@Projects varchar(100),
 	@ProjectGroup varchar(10),
 	@member varchar(200), 
