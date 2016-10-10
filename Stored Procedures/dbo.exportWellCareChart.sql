@@ -37,7 +37,7 @@ BEGIN
 				,[REN PROVIDER ID]		varchar(20)
 				,[MEMBER ID]			varchar(22)
 				,[Member Individual ID]	varchar(15)
-				,ChaseID				bigint
+				,ChaseID				varchar(50)
 				,[PROVIDER TYPE]		varchar(50)
 				,REN_TIN				varchar(20)
 				,REN_PIN				varchar(20)

@@ -2,7 +2,7 @@ SET QUOTED_IDENTIFIER ON
 GO
 SET ANSI_NULLS ON
 GO
---	cm_searchCharts @Member=0, @Provider=0, @Office=0,  @ChaseID='116293CENT',@MemberID='', @MemberName='', @MemberDOB=NULL, @ProviderID='', @ProviderName = '',@user=1
+--	cm_searchCharts @Member=0, @Provider=0, @Office=0, @MemberID='', @ChaseID='', @MemberName='', @MemberDOB=NULL, @ProviderID='', @ProviderName = ''
 CREATE PROCEDURE [dbo].[cm_searchCharts] 
 	@Member bigint,
 	@Provider bigint,
