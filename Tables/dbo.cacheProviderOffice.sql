@@ -21,5 +21,7 @@ CREATE TABLE [dbo].[cacheProviderOffice]
 GO
 ALTER TABLE [dbo].[cacheProviderOffice] ADD CONSTRAINT [PK_cacheProviderOffice] PRIMARY KEY CLUSTERED  ([Project_PK], [ProviderOffice_PK]) ON [PRIMARY]
 GO
+CREATE NONCLUSTERED INDEX [IDX_FollowUp] ON [dbo].[cacheProviderOffice] ([follow_up]) INCLUDE ([ProviderOffice_PK]) ON [PRIMARY]
+GO
 CREATE NONCLUSTERED INDEX [IX_ProviderPKProviderOfficePK] ON [dbo].[cacheProviderOffice] ([Project_PK], [ProviderOffice_PK]) ON [PRIMARY]
 GO
