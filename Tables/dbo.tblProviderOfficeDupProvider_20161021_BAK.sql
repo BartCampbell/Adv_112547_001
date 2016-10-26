@@ -1,4 +1,4 @@
-CREATE TABLE [dbo].[tblProviderOffice]
+CREATE TABLE [dbo].[tblProviderOfficeDupProvider_20161021_BAK]
 (
 [ProviderOffice_PK] [bigint] NOT NULL IDENTITY(1, 1),
 [Address] [varchar] (250) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
@@ -16,12 +16,4 @@ CREATE TABLE [dbo].[tblProviderOffice]
 [AssignedUser_PK] [smallint] NULL,
 [AssignedDate] [smalldatetime] NULL
 ) ON [PRIMARY]
-GO
-ALTER TABLE [dbo].[tblProviderOffice] ADD CONSTRAINT [PK_tblProviderOffice] PRIMARY KEY CLUSTERED  ([ProviderOffice_PK]) ON [PRIMARY]
-GO
-CREATE NONCLUSTERED INDEX [idxPOAssignedUser_PK] ON [dbo].[tblProviderOffice] ([AssignedUser_PK]) ON [PRIMARY]
-GO
-CREATE NONCLUSTERED INDEX [idxPOPoolPK] ON [dbo].[tblProviderOffice] ([Pool_PK]) ON [PRIMARY]
-GO
-CREATE NONCLUSTERED INDEX [idxPOBucket] ON [dbo].[tblProviderOffice] ([ProviderOfficeBucket_PK]) ON [PRIMARY]
 GO

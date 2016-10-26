@@ -9,11 +9,11 @@ GO
 -- =============================================
 --	sch_getOfficeProvider 1,1
 CREATE PROCEDURE [dbo].[sch_getOfficeProvider] 
-	@Projects varchar(100),
-	@ProjectGroup varchar(10),
+	@Channel VARCHAR(1000),
+	@Projects varchar(1000),
+	@ProjectGroup varchar(1000),
 	@Office bigint,
-	@user int,
-	@channel int
+	@user int
 AS
 BEGIN
 	-- PROJECT/Channel SELECTION
@@ -38,10 +38,10 @@ BEGIN
 		EXEC ('DELETE FROM #tmpProject WHERE Project_PK NOT IN ('+@Projects+')')
 		
 	IF (@ProjectGroup<>'0')
-		DELETE T FROM #tmpProject T INNER JOIN tblProject P ON P.Project_PK = T.Project_PK WHERE ProjectGroup_PK<>@ProjectGroup
+		EXEC ('DELETE T FROM #tmpProject T INNER JOIN tblProject P ON P.Project_PK = T.Project_PK WHERE ProjectGroup_PK NOT IN ('+@ProjectGroup+')')
 		
-	IF (@Channel<>0)
-		DELETE T FROM #tmpChannel T WHERE Channel_PK<>@Channel				 
+	IF (@Channel<>'0')
+		EXEC ('DELETE T FROM #tmpChannel T WHERE Channel_PK NOT IN ('+@Channel+')')			 
 	-- PROJECT/Channel SELECTION
 
 	SELECT PM.Provider_ID,PM.Lastname+IsNull(', '+PM.Firstname,'') ProviderName,P.Provider_PK,Count(S.Member_PK) Charts,SUM(CASE WHEN IsScanned=0 AND IsCNA=0 THEN 1 ELSE 0 END) Remaining
