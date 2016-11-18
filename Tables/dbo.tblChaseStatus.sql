@@ -9,7 +9,8 @@ CREATE TABLE [dbo].[tblChaseStatus]
 [CentauriChartStatus] [varchar] (50) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
 [ContactNote] [varchar] (255) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
 [Active] [bit] NULL,
-[ChaseStatusGroup_PK] [tinyint] NULL
+[ChaseStatusGroup_PK] [tinyint] NULL,
+[IsIssue] [bit] NULL
 ) ON [PRIMARY]
 GO
 ALTER TABLE [dbo].[tblChaseStatus] ADD CONSTRAINT [PK_tblChaseStatus] PRIMARY KEY CLUSTERED  ([ChaseStatus_PK]) ON [PRIMARY]

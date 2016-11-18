@@ -7,7 +7,7 @@ GO
 -- Create date: <Create Date,,>
 -- Description:	<Description,,>
 -- =============================================
-Create PROCEDURE [dbo].[prGetRecordsforWellCarePDFExtract]
+CREATE PROCEDURE [dbo].[prGetRecordsforWellCarePDFExtract]
 	-- Add the parameters for the stored procedure here
 	
 AS
@@ -23,17 +23,17 @@ SELECT DISTINCT M.Lastname+', '+M.Firstname Member,[Member ID],[Member Individua
 FROM tmpExportChartStaging S INNER JOIN tblMember M ON S.Member_PK = M.Member_PK
 WHERE S.Suspect_PK IN (
 
-SELECT Distinct SD.Suspect_PK FROM tblScannedData SD Inner JOIN tmpExportChartStaging T ON T.Suspect_PK = SD.Suspect_PK 
+SELECT Distinct SD.Suspect_PK FROM tblScannedData SD 
 INNER JOIN tblSuspect S ON S.Suspect_PK=SD.Suspect_PK 
-INNER JOIN WC_ChartExtract wc ON wc.ChartID = s.ChaseID
+INNER JOIN WellcareExtract_20161118 wc ON wc.ChartID = s.ChaseID
 WHERE IsNull(SD.is_deleted,0)=0 AND SD.DocumentType_PK<>99 AND S.IsScanned=1 
 ) AND S.Suspect_PK <= 205902
 
 --IMAGES
 SELECT SD.ScannedData_PK, SD.Suspect_PK,sd.DocumentType_PK, sd.FileName, sd.User_PK, sd.dtInsert, sd.is_deleted, sd.CodedStatus, S.Provider_PK,S.Project_PK 
-FROM tblScannedData SD INNER JOIN tmpExportChartStaging T ON T.Suspect_PK = SD.Suspect_PK 
+FROM tblScannedData SD 
 INNER JOIN tblSuspect S ON S.Suspect_PK=SD.Suspect_PK
-INNER JOIN WC_ChartExtract wc ON wc.ChartID = s.ChaseID
+INNER JOIN WellcareExtract_20161118 wc ON wc.ChartID = s.ChaseID
  WHERE IsNull(SD.is_deleted,0)=0 AND SD.DocumentType_PK<>99 AND S.IsScanned=1 AND S.Suspect_PK <= 205902
 
 ORDER By SD.Suspect_PK,CAST(LEFT(RIGHT(Filename,LEN(Filename)-CharIndex('_'+CAST(SD.DocumentType_PK AS VARCHAR)+'_',Filename)-2),CharIndex('_',RIGHT(Filename,LEN(Filename)-CharIndex('_'+CAST(SD.DocumentType_PK AS VARCHAR)+'_',Filename)-2))-1) AS VARCHAR);
