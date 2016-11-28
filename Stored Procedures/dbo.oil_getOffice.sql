@@ -7,8 +7,6 @@ CREATE PROCEDURE [dbo].[oil_getOffice]
 	@Channel VARCHAR(1000),
 	@Projects varchar(1000),
 	@ProjectGroup varchar(1000),
-	@Status1 varchar(1000),
-	@Status2 varchar(1000),
 	@Page int,
 	@PageSize int,
 	@Alpha Varchar(2),
@@ -28,9 +26,6 @@ BEGIN
 	CREATE TABLE #tmpChannel (Channel_PK INT)
 	CREATE INDEX idxChannelPK ON #tmpChannel (Channel_PK)
 
-	CREATE TABLE #tmpChaseStatus (ChaseStatus_PK INT, ChaseStatusGroup_PK INT)
-	CREATE INDEX idxChaseStatusPK ON #tmpChaseStatus (ChaseStatus_PK)
-
 	IF Exists (SELECT * FROM tblUser WHERE IsAdmin=1 AND User_PK=@User)	--For Admins
 	BEGIN
 		INSERT INTO #tmpProject(Project_PK) SELECT DISTINCT Project_PK FROM tblProject P WHERE P.IsRetrospective=1
@@ -41,7 +36,6 @@ BEGIN
 		INSERT INTO #tmpProject(Project_PK) SELECT DISTINCT Project_PK FROM tblUserProject WHERE User_PK=@User
 		INSERT INTO #tmpChannel(Channel_PK) SELECT DISTINCT Channel_PK FROM tblUserChannel WHERE User_PK=@User
 	END
-	INSERT INTO #tmpChaseStatus(ChaseStatus_PK,ChaseStatusGroup_PK) SELECT DISTINCT ChaseStatus_PK,ChaseStatusGroup_PK FROM tblChaseStatus
 
 	IF (@Projects<>'0')
 		EXEC ('DELETE FROM #tmpProject WHERE Project_PK NOT IN ('+@Projects+')')
@@ -50,13 +44,7 @@ BEGIN
 		EXEC ('DELETE T FROM #tmpProject T INNER JOIN tblProject P ON P.Project_PK = T.Project_PK WHERE ProjectGroup_PK NOT IN ('+@ProjectGroup+')')
 		
 	IF (@Channel<>'0')
-		EXEC ('DELETE T FROM #tmpChannel T WHERE Channel_PK NOT IN ('+@Channel+')')	
-		
-	IF (@Status1<>'0')
-		EXEC ('DELETE T FROM #tmpChaseStatus T WHERE ChaseStatusGroup_PK NOT IN ('+@Status1+')')	
-		
-	IF (@Status2<>'0')
-		EXEC ('DELETE T FROM #tmpChaseStatus T WHERE ChaseStatus_PK NOT IN ('+@Status2+')')						 
+		EXEC ('DELETE T FROM #tmpChannel T WHERE Channel_PK NOT IN ('+@Channel+')')			 
 	-- PROJECT/Channel SELECTION
 		
 	DECLARE @OFFICE AS BIGINT
@@ -89,7 +77,6 @@ BEGIN
 				INNER JOIN tblMember M WITH (NOLOCK) ON M.Member_PK = S.Member_PK
 				INNER JOIN #tmpProject FP ON FP.Project_PK = S.Project_PK
 				INNER JOIN #tmpChannel FC ON FC.Channel_PK = S.Channel_PK
-				INNER JOIN #tmpChaseStatus FS ON FS.ChaseStatus_PK = S.ChaseStatus_PK
 				LEFT JOIN tblProviderOfficeStatus POS ON POS.ProviderOffice_PK = PO.ProviderOffice_PK
 				LEFT JOIN tblZipcode ZC WITH (NOLOCK) ON ZC.ZipCode_PK = PO.ZipCode_PK	
 			WHERE IsNull(PO.Address,0) Like @Alpha+'%'
@@ -100,7 +87,6 @@ BEGIN
 					(@search_type=102 AND PO.LocationID Like '%'+@search_value+'%') OR
 					(@search_type=103 AND PO.ContactNumber Like '%'+@search_value+'%') OR
 					(@search_type=104 AND PO.FaxNumber Like '%'+@search_value+'%') OR
-					(@search_type=105 AND S.PlanLID Like '%'+@search_value+'%') OR
 					(@search_type=201 AND PM.ProviderGroup Like '%'+@search_value+'%') OR
 					(@search_type=202 AND PM.Provider_ID Like '%'+@search_value+'%') OR
 					(@search_type=203 AND PM.NPI Like '%'+@search_value+'%') OR
@@ -136,11 +122,11 @@ BEGIN
 			CREATE INDEX idxProviderOffice_PK ON #tmp (ProviderOffice_PK)
 			CREATE INDEX idxContactNotesOffice_PK ON #tmp (ContactNotesOffice_PK)
 
-			SELECT DISTINCT PO.LocationID [Centauri Location ID],S.PlanLID [Plan Location ID],PO.Address,ZC.City,ZC.County,ZC.State,ZC.Zipcode,PO.ContactPerson,PO.ContactNumber,PO.FaxNumber
+			SELECT DISTINCT PO.LocationID,PO.Address,ZC.City,ZC.County,ZC.State,ZC.Zipcode,PO.ContactPerson,PO.ContactNumber,PO.FaxNumber
 				,OIST.OfficeIssueStatusText
 				,S.ChaseID
-				,PM.Provider_ID [Centauri Provider ID],PM.PIN [Plan Provider ID], PM.Lastname+IsNull(', '+PM.Firstname,'') ProviderName,PM.ProviderGroup
-				,M.Member_ID,M.HICNumber,M.Lastname+IsNull(', '+M.Firstname,'') Member
+				,PM.Provider_ID,PM.Lastname+IsNull(', '+PM.Firstname,'') Provider
+				,M.Member_ID,M.Lastname+IsNull(', '+M.Firstname,'') Member
 				,[Issue Note], [Issue Additional Info],IssueDate, IRT.IssueResponse+': '+IRO.AdditionalResponse IssueResponse, IRO.dtInsert ReponseDate
 			FROM tblProviderOffice PO WITH (NOLOCK) 
 				INNER JOIN tblProviderOfficeBucket POB WITH (NOLOCK) ON POB.ProviderOfficeBucket_PK = PO.ProviderOfficeBucket_PK
@@ -149,15 +135,13 @@ BEGIN
 				INNER JOIN tblSuspect S WITH (NOLOCK) ON S.Provider_PK = P.Provider_PK
 				INNER JOIN #tmpProject FP ON FP.Project_PK = S.Project_PK
 				INNER JOIN #tmpChannel FC ON FC.Channel_PK = S.Channel_PK
-				INNER JOIN #tmpChaseStatus FS ON FS.ChaseStatus_PK = S.ChaseStatus_PK
 				INNER JOIN tblMember M WITH (NOLOCK) ON M.Member_PK = S.Member_PK
 				INNER JOIN #tmp POS WITH (NOLOCK) ON POS.ProviderOffice_PK = PO.ProviderOffice_PK
 				INNER JOIN tblOfficeIssueStatusText OIST WITH (NOLOCK) ON OIST.OfficeIssueStatus_PK = POS.OfficeIssueStatus
 				LEFT JOIN tblZipcode ZC WITH (NOLOCK) ON ZC.ZipCode_PK = PO.ZipCode_PK	
 				LEFT JOIN tblIssueResponseOffice IRO WITH (NOLOCK) ON IRO.ContactNotesOffice_PK = POS.ContactNotesOffice_PK
 				LEFT JOIN tblIssueResponse IRT WITH (NOLOCK) ON IRT.IssueResponse_PK = IRO.IssueResponse_PK
-			WHERE IsScanned=0 AND IsCNA=0
-				AND IsNull(PO.Address,0) Like @Alpha+'%'
+			WHERE IsNull(PO.Address,0) Like @Alpha+'%'
 				AND (@OFFICE=0 OR PO.ProviderOffice_PK=@OFFICE)
 				AND (@OFFICE<>0 OR POS.OfficeIssueStatus IS NOT NULL)
 				AND (@OFFICE<>0 OR (@filter_type=0 OR POS.OfficeIssueStatus=@filter_type))

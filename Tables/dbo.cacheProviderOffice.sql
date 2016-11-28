@@ -27,3 +27,11 @@ CREATE NONCLUSTERED INDEX [IX_ProviderPKProviderOfficePK] ON [dbo].[cacheProvide
 GO
 CREATE NONCLUSTERED INDEX [IDX_ProviderOfficePK] ON [dbo].[cacheProviderOffice] ([ProviderOffice_PK]) INCLUDE ([dtLastContact], [follow_up]) ON [PRIMARY]
 GO
+GRANT ALTER ON  [dbo].[cacheProviderOffice] TO [INTERNAL\Paul.Johnson]
+GO
+GRANT CONTROL ON  [dbo].[cacheProviderOffice] TO [INTERNAL\Paul.Johnson]
+GO
+GRANT INSERT ON  [dbo].[cacheProviderOffice] TO [INTERNAL\Paul.Johnson]
+GO
+GRANT DELETE ON  [dbo].[cacheProviderOffice] TO [INTERNAL\Paul.Johnson]
+GO
