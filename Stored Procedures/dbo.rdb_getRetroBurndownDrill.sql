@@ -108,7 +108,7 @@ BEGIN
 				POB.Bucket [Office Status],
 				T.Sch_Date Scheduled,
 				S.Scanned_Date Extracted,
-				CNA_Date CNA,
+				CASE WHEN S.Scanned_Date IS NULL THEN S.CNA_Date ELSE NULL END CNA,
 				Coded_Date Coded
 			FROM tblSuspect S WITH (NOLOCK) 
 				INNER JOIN #tmpProject FP ON FP.Project_PK = S.Project_PK

@@ -86,11 +86,9 @@ BEGIN
 
 	SELECT TOP (@Records)
 		C.Channel_Name Project,PR.Project_Name LOB,
-		S.ChaseID,M.Member_ID,M.Lastname+IsNull(', '+M.Firstname,'') Member,
-		PM.Provider_ID,PM.Lastname+IsNull(', '+PM.Firstname,'') Provider,
-		PO.Address,ZC.ZipCode [Zip Code],ZC.City,ZC.State,
-		PM.ProviderGroup [Group Name],
-		CS.ChaseStatus [Chase Status],
+		S.ChaseID,M.Member_ID,M.HICNumber,M.Lastname+IsNull(', '+M.Firstname,'') Member,
+		PM.Provider_ID [Centauri Provider ID],PM.PIN [Plan Provider ID], PM.Lastname+IsNull(', '+PM.Firstname,'') Provider,PM.ProviderGroup [Group Name],
+		PO.LocationID [Centauri Location ID],S.PlanLID [Plan Location ID],PO.Address,ZC.ZipCode [Zip Code],ZC.City,ZC.State,
 		CASE T.schedule_type
 			WHEN 0 THEN 'On Site' 
 			WHEN 1 THEN 'Fax In' 
@@ -100,9 +98,9 @@ BEGIN
 			WHEN 5 THEN 'EMR/Remote' 
 		END [Scheduled],
 		S.Scanned_Date Extracted,
-		CNA_Date CNA,
+		CASE WHEN S.Scanned_Date IS NULL THEN S.CNA_Date ELSE NULL END CNA,
 		Coded_Date Coded,
-		S.ChartPriority [Chart Priority]
+		S.ChartPriority [Chart Priority],CS.ChaseStatus ChaseStatus,CS.ChartResolutionCode,S.REN_PROVIDER_SPECIALTY [Provider Specialty]
 	INTO #Output
 	FROM tblSuspect S WITH (NOLOCK) 
 		INNER JOIN #tmpProject FP ON FP.Project_PK = S.Project_PK

@@ -37,7 +37,8 @@ CREATE TABLE [dbo].[tblSuspect]
 [ChartRec_Date] [smalldatetime] NULL,
 [InvoiceExt_Date] [smalldatetime] NULL,
 [Channel_PK] [int] NULL,
-[ChaseStatus_PK] [int] NULL
+[ChaseStatus_PK] [int] NULL,
+[PlanLID] [varchar] (50) COLLATE SQL_Latin1_General_CP1_CI_AS NULL
 ) ON [PRIMARY]
 GO
 SET QUOTED_IDENTIFIER ON
