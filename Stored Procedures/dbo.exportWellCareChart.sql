@@ -90,6 +90,7 @@ BEGIN
 		WHERE	t.Suspect_PK IS NULL
 				AND
 				s.IsScanned = 1
+				AND s.Channel_PK=10
 
 
 		--*****************************************************************************
