@@ -1,4 +1,4 @@
-CREATE TABLE [dbo].[tmpExportChases]
+CREATE TABLE [dbo].[tmpExportChases_bu]
 (
 [Member ID] [varchar] (22) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
 [Member Individual ID] [varchar] (15) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
@@ -11,6 +11,4 @@ CREATE TABLE [dbo].[tmpExportChases]
 [InNormal] [int] NULL,
 [QuickRAPSDate] [datetime] NOT NULL
 ) ON [PRIMARY]
-GO
-CREATE NONCLUSTERED INDEX [IDX_ChaseID] ON [dbo].[tmpExportChases] ([ChaseID]) ON [PRIMARY]
 GO

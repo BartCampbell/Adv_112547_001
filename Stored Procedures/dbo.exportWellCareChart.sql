@@ -85,13 +85,14 @@ BEGIN
 					ON p.ProviderMaster_PK = pm.ProviderMaster_PK
 				INNER JOIN tblMember m  WITH (NOLOCK)
 					ON s.Member_PK = m.Member_PK
+				INNER JOIN dbo.tblScannedData SD 
+					ON SD.Suspect_PK = s.Suspect_PK
 				LEFT JOIN tmpExportChases t 
 					ON s.Suspect_PK = t.Suspect_PK
+
 		WHERE	t.Suspect_PK IS NULL
 				AND
-				s.IsScanned = 1
-				AND s.Channel_PK=10
-
+				IsNull(SD.is_deleted,0)=0 AND SD.DocumentType_PK<>99 AND S.IsScanned=1 AND S.Channel_PK=10
 
 		--*****************************************************************************
 		TRUNCATE TABLE tmpExportChartStaging	

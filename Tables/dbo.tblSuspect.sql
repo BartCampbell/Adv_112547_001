@@ -90,6 +90,10 @@ CREATE NONCLUSTERED INDEX [IDX_CodedDate] ON [dbo].[tblSuspect] ([Coded_Date]) I
 GO
 CREATE NONCLUSTERED INDEX [IDX_IsCoded] ON [dbo].[tblSuspect] ([IsCoded]) INCLUDE ([Coded_Date], [Coded_User_PK], [Member_PK], [Project_PK], [Provider_PK], [QA_Date], [QA_User_PK], [Scanned_User_PK], [Suspect_PK]) ON [PRIMARY]
 GO
+CREATE NONCLUSTERED INDEX [IDX_IsScannedChannelPK] ON [dbo].[tblSuspect] ([IsScanned], [Channel_PK]) INCLUDE ([ChaseID], [dtCreated], [Member_PK], [Provider_PK], [Suspect_PK]) ON [PRIMARY]
+GO
+CREATE NONCLUSTERED INDEX [IDX_IsScannedChaseID] ON [dbo].[tblSuspect] ([IsScanned], [ChaseID]) ON [PRIMARY]
+GO
 CREATE NONCLUSTERED INDEX [IDX_MemberSuspect_PK] ON [dbo].[tblSuspect] ([IsScanned], [IsCoded]) INCLUDE ([Member_PK], [Suspect_PK]) ON [PRIMARY]
 GO
 CREATE NONCLUSTERED INDEX [IX_tblSuspectMember] ON [dbo].[tblSuspect] ([Member_PK]) ON [PRIMARY]
