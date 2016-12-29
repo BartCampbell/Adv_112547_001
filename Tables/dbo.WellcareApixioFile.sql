@@ -20,3 +20,5 @@ CREATE TABLE [dbo].[WellcareApixioFile]
 [IsProcessed] [bit] NULL
 ) ON [PRIMARY]
 GO
+CREATE NONCLUSTERED INDEX [IDX_SuspectPK] ON [dbo].[WellcareApixioFile] ([Suspect_PK]) INCLUDE ([Chart_File_Name], [IsProcessed]) ON [PRIMARY]
+GO

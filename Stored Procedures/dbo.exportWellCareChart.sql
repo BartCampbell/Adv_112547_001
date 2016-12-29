@@ -89,10 +89,13 @@ BEGIN
 					ON SD.Suspect_PK = s.Suspect_PK
 				LEFT JOIN tmpExportChases t 
 					ON s.Suspect_PK = t.Suspect_PK
+				LEFT JOIN DoNotExport ne
+					ON s.ChaseID = ne.chaseID
 
 		WHERE	t.Suspect_PK IS NULL
 				AND
 				IsNull(SD.is_deleted,0)=0 AND SD.DocumentType_PK<>99 AND S.IsScanned=1 AND S.Channel_PK=10
+
 
 		--*****************************************************************************
 		TRUNCATE TABLE tmpExportChartStaging	
