@@ -1,7 +1,7 @@
 CREATE TABLE [dbo].[tblChaseStatus]
 (
 [ChaseStatus_PK] [int] NOT NULL IDENTITY(1, 1),
-[VendorCodeType] [varchar] (7) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL,
+[VendorCodeType] [varchar] (20) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
 [VendorCode] [varchar] (50) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
 [VendorPendReason] [varchar] (100) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
 [ChaseStatus] [varchar] (50) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
