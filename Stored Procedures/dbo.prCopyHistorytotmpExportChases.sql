@@ -23,6 +23,10 @@ BEGIN
 		WHERE IsNull(SD.is_deleted,0)=0 AND SD.DocumentType_PK<>99 AND S.IsScanned=1 AND S.Channel_PK=10
 		GROUP BY [Member ID], [Member Individual ID], [REN Provider ID], T.Member_PK, T.Suspect_PK, [CHART NAME],T.ChaseID, InDummy, InNormal
 
+		INSERT INTO [dbo].[Apixio_ScannedDocumentMetaData]
+		SELECT ChaseID
+		FROM tmpExportChartStaging T
+
 					
 END
 GO

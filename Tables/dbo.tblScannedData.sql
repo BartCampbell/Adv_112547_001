@@ -14,7 +14,13 @@ ALTER TABLE [dbo].[tblScannedData] ADD CONSTRAINT [PK_tblScannedData] PRIMARY KE
 GO
 CREATE NONCLUSTERED INDEX [IDX_DocTypePK] ON [dbo].[tblScannedData] ([DocumentType_PK]) INCLUDE ([is_deleted], [Suspect_PK]) ON [PRIMARY]
 GO
+CREATE NONCLUSTERED INDEX [NonClusteredIndex-20170116-101011] ON [dbo].[tblScannedData] ([dtInsert]) INCLUDE ([CodedStatus], [DocumentType_PK], [FileName], [is_deleted], [ScannedData_PK], [Suspect_PK], [User_PK]) ON [PRIMARY]
+GO
+CREATE NONCLUSTERED INDEX [NonClusteredIndex-20170116-100425] ON [dbo].[tblScannedData] ([dtInsert]) INCLUDE ([Suspect_PK]) ON [PRIMARY]
+GO
 CREATE NONCLUSTERED INDEX [IDX_FileName] ON [dbo].[tblScannedData] ([FileName]) ON [PRIMARY]
+GO
+CREATE NONCLUSTERED INDEX [IDX_IsDeleted] ON [dbo].[tblScannedData] ([is_deleted], [DocumentType_PK]) INCLUDE ([Suspect_PK]) ON [PRIMARY]
 GO
 CREATE NONCLUSTERED INDEX [IX_tblScannedData_Suspect] ON [dbo].[tblScannedData] ([Suspect_PK]) ON [PRIMARY]
 GO

@@ -84,6 +84,8 @@ END
 GO
 ALTER TABLE [dbo].[tblSuspect] ADD CONSTRAINT [PK_tblSuspect] PRIMARY KEY CLUSTERED  ([Suspect_PK]) ON [PRIMARY]
 GO
+CREATE NONCLUSTERED INDEX [IDX_ChartPriority] ON [dbo].[tblSuspect] ([ChartPriority]) ON [PRIMARY]
+GO
 CREATE NONCLUSTERED INDEX [IDX_ChaseID] ON [dbo].[tblSuspect] ([ChaseID]) ON [PRIMARY]
 GO
 CREATE NONCLUSTERED INDEX [IX_tblSuspectChaseStatus] ON [dbo].[tblSuspect] ([ChaseStatus_PK]) ON [PRIMARY]
