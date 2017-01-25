@@ -2,19 +2,22 @@ SET QUOTED_IDENTIFIER ON
 GO
 SET ANSI_NULLS ON
 GO
-
 CREATE VIEW [dbo].[vwWellcareApixioFile_Combined]
 AS
-SELECT CHART_ID, Chart_File_Name FROM WellcareApixioFile2
-UNION 
-SELECT CHART_ID, Chart_File_Name FROM WellcareApixioFile3
+SELECT        CHART_ID, Chart_File_Name, IsProcessed
+FROM            WellcareApixioFile2
 UNION
-SELECT CHART_ID, Chart_File_Name FROM WellcareApixioFile4
+SELECT        CHART_ID, Chart_File_Name,IsProcessed
+FROM            WellcareApixioFile3
 UNION
-SELECT CHART_ID, Chart_File_Name FROM WellcareApixioFile5
+SELECT        CHART_ID, Chart_File_Name,IsProcessed
+FROM            WellcareApixioFile4
 UNION
-SELECT CHART_ID, Chart_File_Name FROM WellcareApixioFile6
-
+SELECT        CHART_ID, Chart_File_Name,IsProcessed
+FROM            WellcareApixioFile5
+UNION
+SELECT        CHART_ID, Chart_File_Name,IsProcessed
+FROM            WellcareApixioFile6
 GO
 EXEC sp_addextendedproperty N'MS_DiagramPane1', N'[0E232FF0-B466-11cf-A24F-00AA00A3EFFF, 1.00]
 Begin DesignProperties = 
