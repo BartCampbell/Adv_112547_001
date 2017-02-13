@@ -9,5 +9,7 @@ CREATE TABLE [dbo].[ApixioFilesReceived]
 GO
 ALTER TABLE [dbo].[ApixioFilesReceived] ADD CONSTRAINT [PK_ApixioFilesReceived] PRIMARY KEY CLUSTERED  ([RecID]) ON [PRIMARY]
 GO
+CREATE NONCLUSTERED INDEX [IDX_ChartID] ON [dbo].[ApixioFilesReceived] ([ChaseID]) ON [PRIMARY]
+GO
 CREATE NONCLUSTERED INDEX [IDX_ChaseIDVendor] ON [dbo].[ApixioFilesReceived] ([ChaseID], [Vendor]) ON [PRIMARY]
 GO
