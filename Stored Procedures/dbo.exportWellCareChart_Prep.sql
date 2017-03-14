@@ -54,28 +54,28 @@ BEGIN
 			) ON [PRIMARY]
 ---*************************************	
 				--DROP TABLE #DoNotExport
-				SELECT * INTO #DoNotExport
-				FROM(
-							SELECT DISTINCT Chase_ID AS ChaseID FROM [dbo].[Apixio_ScannedDocumentMetaData] 
-							UNION
-							Select DISTINCT ChaseID from DoNotExport 
-							UNION
-							SELECT DISTINCT REPLACE(ChartID,'CENT','') FROM dbo.ApixioCharts_AllSources
-							WHERE chartid LIKE '%CENT%' AND filename LIKE 'Wellcare1606_01%'
-							UNION 
-							SELECT DISTINCT ChartID FROM dbo.ApixioCharts_AllSources WHERE filename LIKE 'Wellcare1606_01%'
+			--	SELECT * INTO #DoNotExport
+			--	FROM(
+			--				SELECT DISTINCT Chase_ID AS ChaseID FROM [dbo].[Apixio_ScannedDocumentMetaData] 
+			--				UNION
+			--				Select DISTINCT ChaseID from DoNotExport 
+			--				UNION
+			--				SELECT DISTINCT REPLACE(ChartID,'CENT','') FROM dbo.ApixioCharts_AllSources
+			--				WHERE chartid LIKE '%CENT%' AND filename LIKE 'Wellcare1606_01%'
+			--				UNION 
+			--				SELECT DISTINCT ChartID FROM dbo.ApixioCharts_AllSources WHERE filename LIKE 'Wellcare1606_01%'
 			
-					) a
+			--		) a
 
-				INSERT INTO #DoNotExport
-			        ( ChaseID )
-				SELECT ChaseID + 'CENT' FROM #DoNotExport WHERE chaseid NOT LIKE '%CENT%'
+			--	INSERT INTO #DoNotExport
+			--        ( ChaseID )
+			--	SELECT ChaseID + 'CENT' FROM #DoNotExport WHERE chaseid NOT LIKE '%CENT%'
 
 
-				CREATE NONCLUSTERED INDEX [ClusteredIndex-20170111-193427] ON dbo.#DoNotExport
-			(
-				[ChaseID] ASC
-			)
+			--	CREATE NONCLUSTERED INDEX [ClusteredIndex-20170111-193427] ON dbo.#DoNotExport
+			--(
+			--	[ChaseID] ASC
+			--)
 
 
 			
@@ -120,16 +120,14 @@ BEGIN
 					ON SD.Suspect_PK = s.Suspect_PK	
 							
 		WHERE	
-				IsNull(SD.is_deleted,0)=0  AND S.IsScanned=1 AND S.Channel_PK=10 AND SD.DocumentType_PK <> 99
+				IsNull(SD.is_deleted,0)=0  AND S.IsScanned=1-- AND S.Channel_PK=10 AND SD.DocumentType_PK <> 99
 				--AND s.ChaseID NOT IN  (Select ChaseID from DoNotExport WITH (NOLOCK)) --List of Chases not to export
-				AND s.chaseID NOT IN 
-				(
-				   SELECT DISTINCT ChaseID FROM #DoNotExport				  	
+				AND s.chaseID IN 
+				( '200485','105792','200789' 	
 				) 
-				--Already Been Sen, do not send.
-			--	AND s.chaseID IN (SELECT chaseID FROM Wellcare_Apixio_Recon_20170111)--Apixio Recon
+	
 				
-				
+		
 
 		--*****************************************************************************
 	

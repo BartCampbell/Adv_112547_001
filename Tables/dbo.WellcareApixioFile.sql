@@ -1,6 +1,6 @@
 CREATE TABLE [dbo].[WellcareApixioFile]
 (
-[WellcareApixioFileID] [int] NOT NULL,
+[WellcareApixioFileID] [int] NULL,
 [Extract_Date] [varchar] (500) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
 [Chart_ID] [varchar] (500) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
 [Client_Member_ID] [varchar] (500) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
@@ -17,7 +17,8 @@ CREATE TABLE [dbo].[WellcareApixioFile]
 [ReceivedDate] [datetime] NULL,
 [Suspect_PK] [varchar] (50) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
 [Vendor] [varchar] (50) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
-[IsProcessed] [bit] NULL
+[IsProcessed] [bit] NULL,
+[IsInProcess] [bit] NULL CONSTRAINT [DF_WellcareApixioFile_IsInProcess] DEFAULT ((0))
 ) ON [PRIMARY]
 GO
 CREATE NONCLUSTERED INDEX [IDX_SuspectPK] ON [dbo].[WellcareApixioFile] ([Suspect_PK]) INCLUDE ([Chart_File_Name], [IsProcessed]) ON [PRIMARY]
