@@ -123,7 +123,13 @@ BEGIN
 				IsNull(SD.is_deleted,0)=0  AND S.IsScanned=1-- AND S.Channel_PK=10 AND SD.DocumentType_PK <> 99
 				--AND s.ChaseID NOT IN  (Select ChaseID from DoNotExport WITH (NOLOCK)) --List of Chases not to export
 				AND s.chaseID IN 
-				( '200485','105792','200789' 	
+				( SELECT DISTINCT sus.ChaseID FROM dbo.tblSuspect sus 
+JOIN dbo.tblScannedData sd ON sd.Suspect_PK = sus.Suspect_PK
+WHERE sus.chaseID IN 
+(SELECT DISTINCT CHART FROM dbo.WellcareApixioChartPull_20170303)
+AND sus.ChaseID NOT IN 
+(SELECT DISTINCT ChaseID FROM dbo.ApixioRecon_Sent_Delta)
+AND sd.is_deleted=0 AND sus.IsScanned=1
 				) 
 	
 				
