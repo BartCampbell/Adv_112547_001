@@ -15,7 +15,7 @@ SELECT *,GetDate() QuickRAPSDate FROM tmpExportAtenaProvMemb
 SELECT COUNT(*) Charts,QuickRAPSDate FROM tmpExportChases GROUP BY QuickRAPSDate ORDER BY QuickRAPSDate DESC 
 */
 --	exportAtenaData
-CREATE PROCEDURE [dbo].[exportWellCareChart_Prep]
+Create PROCEDURE [dbo].[exportChart]
 AS
 
 BEGIN

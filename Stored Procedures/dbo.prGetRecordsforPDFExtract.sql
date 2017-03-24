@@ -7,7 +7,7 @@ GO
 -- Create date: <Create Date,,>
 -- Description:	<Description,,>
 -- =============================================
-CREATE PROCEDURE [dbo].[prGetRecordsforWellCarePDFExtract]
+CREATE PROCEDURE [dbo].[prGetRecordsforPDFExtract]
 	-- Add the parameters for the stored procedure here
 	
 AS
@@ -16,7 +16,7 @@ BEGIN
 	-- interfering with SELECT statements.
 	SET NOCOUNT ON;
 
-SELECT DISTINCT M.Lastname+', '+M.Firstname Member,[Member ID],[Member Individual ID],[REN Provider ID],S.Member_PK,S.Suspect_PK,[CHART NAME],S.ChaseID,InDummy,InNormal 
+SELECT DISTINCT M.Lastname+', '+M.Firstname Member,[Member ID],[Member Individual ID],[REN Provider ID],S.Member_PK,S.Suspect_PK,[CHART NAME] AS 'ChartName',S.ChaseID,InDummy,InNormal 
 FROM tmpExportChartStaging S INNER JOIN tblMember M ON S.Member_PK = M.Member_PK
 WHERE S.Suspect_PK IN (
 
