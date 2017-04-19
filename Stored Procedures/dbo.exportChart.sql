@@ -15,7 +15,7 @@ SELECT *,GetDate() QuickRAPSDate FROM tmpExportAtenaProvMemb
 SELECT COUNT(*) Charts,QuickRAPSDate FROM tmpExportChases GROUP BY QuickRAPSDate ORDER BY QuickRAPSDate DESC 
 */
 --	exportAtenaData
-Create PROCEDURE [dbo].[exportChart]
+CREATE PROCEDURE [dbo].[exportChart]
 AS
 
 BEGIN
@@ -123,12 +123,28 @@ BEGIN
 				IsNull(SD.is_deleted,0)=0  AND S.IsScanned=1-- AND S.Channel_PK=10 AND SD.DocumentType_PK <> 99
 				--AND s.ChaseID NOT IN  (Select ChaseID from DoNotExport WITH (NOLOCK)) --List of Chases not to export
 				AND s.chaseID IN 
-				( SELECT DISTINCT sus.ChaseID FROM WellcareChartRequest_20170323 req
-					JOIN dbo.tblSuspect sus ON sus.ChaseID = req.ChaseID
-					JOIN dbo.tblScannedData sd ON sd.Suspect_PK = sus.Suspect_PK
-					WHERE sus.IsScanned = 1 AND sd.is_deleted=0
+				(
+				'273990CENT',
+'17424578',
+'445348CENT',
+'17326543',
+'214062',
+'352293CENT',
+'17475533',
+'17423075',
+'259572CENT',
+'18345594',
+'200231',
+'376330CENT',
+'17437051',
+'17376636',
+'256159CENT',
+'2111901',
+'17465049',
+'201164CENT'
+)
 
-				) 
+
 	
 				
 		
