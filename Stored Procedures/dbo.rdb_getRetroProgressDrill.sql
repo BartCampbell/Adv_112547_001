@@ -2,10 +2,11 @@ SET QUOTED_IDENTIFIER ON
 GO
 SET ANSI_NULLS ON
 GO
+
 /* Sample Executions
 rdb_getRetroProgressDrill '0','0','0','0','0',1,0,'',1
 */
-Create PROCEDURE [dbo].[rdb_getRetroProgressDrill]
+CREATE PROCEDURE [dbo].[rdb_getRetroProgressDrill]
 	@Channel VARCHAR(1000),
 	@Projects varchar(1000),
 	@ProjectGroup varchar(1000),
@@ -94,6 +95,7 @@ BEGIN
 		SCH.ScheduleDate, ST.ScheduleType,
 		S.Scanned_Date Extracted,
 		CASE WHEN S.Scanned_Date IS NULL THEN S.CNA_Date ELSE NULL END CNA,
+		t13.notes as 'CNA Reason',
 		Coded_Date Coded,
 		S.ChartPriority [Chart Priority],CS.ChaseStatus ChaseStatus,CS.ChartResolutionCode [Chase Resolution Code],S.REN_PROVIDER_SPECIALTY [Provider Specialty]
 	INTO #Output
@@ -111,6 +113,10 @@ BEGIN
 		LEFT JOIN tblScheduleType ST ON ST.ScheduleType_PK = SCH.ScheduleType_PK
 		LEFT JOIN tblChaseStatus CS WITH (NOLOCK) ON CS.ChaseStatus_PK = S.ChaseStatus_PK
 		LEFT JOIN tblZipCode ZC WITH (NOLOCK) ON ZC.ZipCode_PK = PO.ZipCode_PK
+		left join tblSuspectScanningNotes t12
+        on S.Suspect_PK = t12.Suspect_PK 
+        left join tblScanningNotes t13 
+        on t12.ScanningNote_PK = t13.ScanningNote_PK
 		WHERE (
 				(@DrillType=0)
 			OR (@DrillType=1 AND (CS.IsNotContacted=1 OR CS.IsSchedulingInProgress=1))					--S.IsScanned=0 AND S.IsCNA=0 AND T.Provider_PK IS NULL)						--Not Yet Scheduled = total number of charts in offices not yet contacted (this number will initially be high but then will go down as the number of charts scheduled goes up)
@@ -160,4 +166,5 @@ BEGIN
 		DEALLOCATE db_cursor
 	END
 END
+
 GO

@@ -3,6 +3,9 @@ GO
 SET ANSI_NULLS ON
 GO
 
+
+
+
 -- =============================================
 -- Author:		Sajid Ali
 -- Create date: Mar-19-2014
@@ -124,16 +127,18 @@ BEGIN
 				--AND s.ChaseID NOT IN  (Select ChaseID from DoNotExport WITH (NOLOCK)) --List of Chases not to export
 				AND s.chaseID IN 
 				(
-				'104054',
-'104702',
-'16529629',
-'17318513',
-'17327140',
-'17329845',
-'17419164',
-'17455446',
-'182844CENT',
-'299520CENT'
+				'261668CENT',
+'16501754',
+'16502758',
+'16507054',
+'17391283',
+'17416097',
+'17416098',
+'238810CENT',
+'260113CENT',
+'459335CENT',
+'461920CENT',
+'2028454'
 				)
 
 
@@ -190,4 +195,7 @@ BEGIN
 		END
 	END CATCH
 END
+
+
+
 GO
