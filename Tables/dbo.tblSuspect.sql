@@ -41,7 +41,9 @@ CREATE TABLE [dbo].[tblSuspect]
 [PlanLID] [varchar] (50) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
 [LastContacted] [smalldatetime] NULL,
 [FollowUp] [smalldatetime] NULL,
-[LinkedSuspect_PK] [bigint] NULL
+[LinkedSuspect_PK] [bigint] NULL,
+[OriginalProjectGroup] [varchar] (50) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+[OriginalProjectGroup_PK] [int] NULL
 ) ON [PRIMARY]
 GO
 ALTER TABLE [dbo].[tblSuspect] ADD CONSTRAINT [PK_tblSuspect] PRIMARY KEY CLUSTERED  ([Suspect_PK]) ON [PRIMARY]
