@@ -7,6 +7,7 @@ GO
 
 
 
+
 -- =============================================
 -- Author:		Sajid Ali
 -- Create date: Mar-19-2014
@@ -128,20 +129,12 @@ BEGIN
 				--AND s.ChaseID NOT IN  (Select ChaseID from DoNotExport WITH (NOLOCK)) --List of Chases not to export
 				AND s.chaseID IN 
 				(
-				'931597',
-'257022CENT',
-'109769CENT',
-'167782CENT',
-'261447CENT',
-'265875CENT',
-'283767CENT',
-'288418CENT',
-'341750CENT',
-'349571CENT',
-'402553CENT',
-'406853CENT',
-'440482CENT',
-'547950CENT'
+				'2124978',
+'16566613',
+'17311683',
+'17325683',
+'17404202',
+'17443253'
 				)
 
 
@@ -198,6 +191,7 @@ BEGIN
 		END
 	END CATCH
 END
+
 
 
 
