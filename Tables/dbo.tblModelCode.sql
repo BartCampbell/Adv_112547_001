@@ -13,5 +13,7 @@ CREATE TABLE [dbo].[tblModelCode]
 GO
 CREATE CLUSTERED INDEX [IX_tblModelCode] ON [dbo].[tblModelCode] ([DiagnosisCode]) ON [PRIMARY]
 GO
+CREATE NONCLUSTERED INDEX [IDX_StartEndDate] ON [dbo].[tblModelCode] ([start_date], [end_date]) INCLUDE ([Code_Description], [DiagnosisCode], [IsICD10]) ON [PRIMARY]
+GO
 CREATE NONCLUSTERED INDEX [IDX_V12HCC] ON [dbo].[tblModelCode] ([V12HCC]) INCLUDE ([DiagnosisCode]) ON [PRIMARY]
 GO

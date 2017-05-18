@@ -43,7 +43,8 @@ CREATE TABLE [dbo].[tblSuspect]
 [FollowUp] [smalldatetime] NULL,
 [LinkedSuspect_PK] [bigint] NULL,
 [OriginalProjectGroup] [varchar] (50) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
-[OriginalProjectGroup_PK] [int] NULL
+[OriginalProjectGroup_PK] [int] NULL,
+[Session_PK] [tinyint] NULL
 ) ON [PRIMARY]
 GO
 ALTER TABLE [dbo].[tblSuspect] ADD CONSTRAINT [PK_tblSuspect] PRIMARY KEY CLUSTERED  ([Suspect_PK]) ON [PRIMARY]

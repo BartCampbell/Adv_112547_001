@@ -24,3 +24,5 @@ CREATE NONCLUSTERED INDEX [IDX_IsDeleted] ON [dbo].[tblScannedData] ([is_deleted
 GO
 CREATE NONCLUSTERED INDEX [IX_tblScannedData_Suspect] ON [dbo].[tblScannedData] ([Suspect_PK]) ON [PRIMARY]
 GO
+CREATE NONCLUSTERED INDEX [IDX_SuspectIsDeleted] ON [dbo].[tblScannedData] ([Suspect_PK], [is_deleted]) ON [PRIMARY]
+GO
